@@ -13,14 +13,15 @@ public class viperTest extends LinearOpMode {
     private DcMotor rightSup;
     private DcMotor leftSup;
     private Servo pulso;
+    private Servo garra;
 
     double powerv = 1;
 
     int timeT = 50;
 
-    double pulsoP = 0.5;
+    boolean openGarra = true;
 
-    double garraP = 0.5;
+    boolean upPulso = true;
 
     @Override
     public void runOpMode() {
@@ -39,23 +40,29 @@ public class viperTest extends LinearOpMode {
         rightSup.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         viper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        pulso = hardwareMap.get(Servo.class, "pulso");
+        garra = hardwareMap.get(Servo.class, "garra");
+
+        pulso.setPosition(0.9);
+        garra.setPosition(0.35);
+
         waitForStart();
 
         while (opModeIsActive()) {
 
-            if(gamepad1.y) {
-                pulso.setPosition(90);
-                sleep(10);
-            } else if (gamepad1.b) {
-                pulso.setPosition(90);
-                sleep(10);
+            if(gamepad1.x && !upPulso) {
+                pulso.setPosition(0.9);
+                sleep(100);
+            } else if (gamepad1.x && upPulso) {
+                pulso.setPosition(0.65);
+                sleep(100);
             }
 
-            if(gamepad1.x) {
-                timeT = timeT + 10;
+            if(gamepad1.a && openGarra) {
+                garra.setPosition(0.9);
                 sleep(100);
-            } else if(gamepad1.a) {
-                timeT = timeT - 10;
+            } else if(gamepad1.a && !openGarra) {
+                garra.setPosition(0.35);
                 sleep(100);
             }
 
@@ -81,7 +88,7 @@ public class viperTest extends LinearOpMode {
                 viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 viper.setPower(powerv);
 
-                sleep(10);
+                sleep(1);
 
             } else if (gamepad1.left_trigger > 0.3) {
 
@@ -89,7 +96,7 @@ public class viperTest extends LinearOpMode {
                 viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 viper.setPower(powerv);
 
-                sleep(10);
+                sleep(1);
 
             }
 
@@ -103,7 +110,7 @@ public class viperTest extends LinearOpMode {
                 rightSup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 rightSup.setPower(powerv);
 
-                sleep(10);
+                sleep(1);
 
             } else if (gamepad1.left_bumper) {
 
@@ -115,12 +122,10 @@ public class viperTest extends LinearOpMode {
                 rightSup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 rightSup.setPower(powerv);
 
-                sleep(10);
+                sleep(1);
 
             }
 
-            telemetry.addData("DelayT: ", timeT);
-            telemetry.addData("ViperP: ", powerv);
             telemetry.addData("Starting at",  "%7d :%7d",
                     leftSup.getCurrentPosition(),
                     rightSup.getCurrentPosition());
