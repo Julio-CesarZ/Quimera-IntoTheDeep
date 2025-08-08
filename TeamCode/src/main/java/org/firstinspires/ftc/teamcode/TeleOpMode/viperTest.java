@@ -17,7 +17,7 @@ public class viperTest extends LinearOpMode {
 
     double powerv = 1;
 
-    int timeT = 50;
+    int timeT = 100;
 
     boolean openGarra = true;
 
@@ -44,7 +44,7 @@ public class viperTest extends LinearOpMode {
         garra = hardwareMap.get(Servo.class, "garra");
 
         pulso.setPosition(0.9);
-        garra.setPosition(0.35);
+        garra.setPosition(0.2);
 
         waitForStart();
 
@@ -53,17 +53,21 @@ public class viperTest extends LinearOpMode {
             if(gamepad1.x && !upPulso) {
                 pulso.setPosition(0.9);
                 sleep(100);
+                upPulso = true;
             } else if (gamepad1.x && upPulso) {
                 pulso.setPosition(0.65);
                 sleep(100);
+                upPulso = false;
             }
 
             if(gamepad1.a && openGarra) {
-                garra.setPosition(0.9);
+                garra.setPosition(0.8);
                 sleep(100);
+                openGarra = false;
             } else if(gamepad1.a && !openGarra) {
-                garra.setPosition(0.35);
+                garra.setPosition(0.2);
                 sleep(100);
+                openGarra = true;
             }
 
             int leftCP = leftSup.getCurrentPosition();
@@ -88,15 +92,11 @@ public class viperTest extends LinearOpMode {
                 viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 viper.setPower(powerv);
 
-                sleep(1);
-
             } else if (gamepad1.left_trigger > 0.3) {
 
                 viper.setTargetPosition(viperCP + timeT);
                 viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 viper.setPower(powerv);
-
-                sleep(1);
 
             }
 
@@ -114,13 +114,13 @@ public class viperTest extends LinearOpMode {
 
             } else if (gamepad1.left_bumper) {
 
-                leftSup.setTargetPosition(leftCP - timeT);
-                leftSup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                leftSup.setPower(powerv);
-
                 rightSup.setTargetPosition(rightCP - timeT);
                 rightSup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 rightSup.setPower(powerv);
+
+                leftSup.setTargetPosition(leftCP - timeT);
+                leftSup.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                leftSup.setPower(powerv);
 
                 sleep(1);
 
