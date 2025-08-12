@@ -20,8 +20,8 @@ import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.dashboard.config.Config;
 
-@TeleOp(name = "DriveComArma", group = "TeleOp")
-public class DriveComArma extends LinearOpMode {
+@TeleOp(name = "ServoTest", group = "TeleOp")
+public class servoTest extends LinearOpMode {
 
 
     private DcMotor viper;
@@ -34,6 +34,8 @@ public class DriveComArma extends LinearOpMode {
 
     private boolean upPulso = true;
     private boolean openGarra = false;
+
+    private double pulsoP = 0.9;
 
     private final double powerViper = 1.0;
     private final int passoEncoder = 50;
@@ -62,8 +64,8 @@ public class DriveComArma extends LinearOpMode {
         rightSup.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         viper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        pulso.setPosition(0.4);
-        garra.setPosition(0);
+        pulso.setPosition(pulsoP);
+        garra.setPosition(0.5);
 
         double speedLimit = 0.75;
 
@@ -78,6 +80,7 @@ public class DriveComArma extends LinearOpMode {
             drive.updatePoseEstimate();
 
             Pose2d pose = drive.localizer.getPose();
+            telemetry.addData("ServoPosition: ", pulsoP);
             telemetry.addData("garraP", openGarra);
             telemetry.addData("pulsoP: ", upPulso);
             telemetry.addData("x", pose.position.x);
@@ -93,66 +96,46 @@ public class DriveComArma extends LinearOpMode {
             FtcDashboard.getInstance().sendTelemetryPacket(packet);
 
 
-            if (gamepad1.x) {
-                if (upPulso) {
-                    pulso.setPosition(0.9);
-                } else {
-                    pulso.setPosition(0.6);
-                }
-                upPulso = !upPulso;
-                sleep(200);
+            if (gamepad1.x && pulsoP < 0.9) {
+                pulsoP = pulsoP + 0.05;
+                pulso.setPosition(pulsoP);
             }
 
-            if(gamepad1.a) {
-                if (!openGarra) {
-                    garra.setPosition(0.85);
-                } else {
-                    garra.setPosition(0);
-                }
-                openGarra = !openGarra;
-                sleep(200);
+            if (gamepad1.x && pulsoP > 0.3) {
+                pulsoP = pulsoP - 0.05;
+                pulso.setPosition(pulsoP);
             }
-            /*
+
+
+            if (gamepad2.a) {
+                garra.setPosition(1);
+                sleep(1000);
+                garra.setPosition(0.5);
+            }
+
             if (gamepad1.a) {
                 if(openGarra) {
-                    garra.setPosition(1);
+                    garra.setPosition(0.75);
                 } else {
                     garra.setPosition(0.5);
                 }
                 openGarra = !openGarra;
-                sleep(300);
-            }
-
-             */
-
-            if (gamepad1.y) {
-                speedLimit = 0;
-                pulso.setPosition(0.9);
-                encoder(leftSup, -1400, 0.7);
-                encoder(rightSup, -1450, 0.7);
-                sleep(1500);
-                encoder(viper, -2600, 0.7);
-                sleep(2000);
-                pulso.setPosition(0.6);
                 sleep(500);
-                garra.setPosition(0.85);
-                openGarra = true;
-                sleep(500);
-                pulso.setPosition(0.9);
-                sleep(500);
-                encoder(viper, -100, 0.7);
-                sleep(2000);
-                encoder(leftSup, -100, 0.7);
-                encoder(rightSup, -100, 0.7);
-                sleep(500);
-                pulso.setPosition(0.6);
-            } else {
-                speedLimit = 0.75;
             }
 
             int viperCP = viper.getCurrentPosition();
             int leftCP = leftSup.getCurrentPosition();
             int rightCP = rightSup.getCurrentPosition();
+
+            if(gamepad1.b) {
+                if(openGarra) {
+                    garra.setPosition(0.25);
+                } else {
+                    garra.setPosition(0.5);
+                }
+                openGarra = !openGarra;
+                sleep(500);
+            }
 
             if(gamepad2.y) {
                 encoder(leftSup, leftCP + passoEncoder, 0.3);
