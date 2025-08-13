@@ -126,13 +126,12 @@ public class DriveComArma extends LinearOpMode {
              */
 
             if (gamepad1.y) {
-                speedLimit = 0;
                 pulso.setPosition(0.9);
                 encoder(leftSup, -1400, 0.7);
                 encoder(rightSup, -1450, 0.7);
-                sleep(1500);
-                encoder(viper, -2600, 0.7);
-                sleep(2000);
+                sleep(1000);
+                encoder(viper, -2600, 0.85);
+                sleep(1300);
                 pulso.setPosition(0.6);
                 sleep(500);
                 garra.setPosition(0.85);
@@ -141,13 +140,11 @@ public class DriveComArma extends LinearOpMode {
                 pulso.setPosition(0.9);
                 sleep(500);
                 encoder(viper, -100, 0.7);
-                sleep(2000);
-                encoder(leftSup, -100, 0.7);
-                encoder(rightSup, -100, 0.7);
+                sleep(1300);
+                encoder(leftSup, -20, 0.7);
+                encoder(rightSup, -20, 0.7);
                 sleep(500);
                 pulso.setPosition(0.6);
-            } else {
-                speedLimit = 0.75;
             }
 
             int viperCP = viper.getCurrentPosition();
@@ -169,7 +166,7 @@ public class DriveComArma extends LinearOpMode {
                 encoder(viper, viperCP + passoEncoder, powerViper);
             }
 
-            if (gamepad1.right_bumper && leftCP < -100 && rightCP < -100) {
+            if (gamepad1.right_bumper && leftCP < -20 && rightCP < -20) {
                 encoder(leftSup, leftCP + passoEncoder, powerViper);
                 encoder(rightSup, rightCP + passoEncoder, powerViper);
             } else if (gamepad1.left_bumper && leftCP > -1400 && rightCP > -1400) {

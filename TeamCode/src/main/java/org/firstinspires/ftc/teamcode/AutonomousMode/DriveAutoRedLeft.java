@@ -6,7 +6,6 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -15,13 +14,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Config
-@Autonomous(name = "DriveAuto", group = "Autonomous")
-public class DriveAuto extends LinearOpMode {
+@Autonomous(name = "RedLeft", group = "Autonomous")
+public class DriveAutoRedLeft extends LinearOpMode {
 
     public class moverGarra {
         private Servo garra;
@@ -137,8 +136,8 @@ public class DriveAuto extends LinearOpMode {
         public class AbaixarArm implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                encoder(leftSup, -100, 0.7);
-                encoder(rightSup, -100, 0.7);
+                encoder(leftSup, 0, 0.7);
+                encoder(rightSup, 0, 0.7);
                 sleep(500);
                 return false;
             }
@@ -151,8 +150,8 @@ public class DriveAuto extends LinearOpMode {
         public class SetArmPosition implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                encoder(leftSup, -800, 0.4);
-                encoder(rightSup, -800, 0.4);
+                encoder(leftSup, -800, 0.5);
+                encoder(rightSup, -800, 0.5);
                 sleep(200);
                 return false;
             }
@@ -199,7 +198,7 @@ public class DriveAuto extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 encoder(viper, -2600, 7);
-                sleep(2000);
+                sleep(1500);
                 return false;
             }
         }
@@ -211,7 +210,7 @@ public class DriveAuto extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 encoder(viper, -200, 6.5);
-                sleep(1800);
+                sleep(1000);
                 return false;
             }
         }
@@ -244,8 +243,8 @@ public class DriveAuto extends LinearOpMode {
         public class SetViperPosition implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                encoder(viper, -550, 5);
-                sleep(1000);
+                encoder(viper, -600, 5);
+                sleep(500);
                 return false;
             }
         }
@@ -269,8 +268,8 @@ public class DriveAuto extends LinearOpMode {
         TrajectoryActionBuilder tab3 = drive.actionBuilder(initialPose)
                 .strafeToLinearHeading(new Vector2d(-46, -54), Math.toRadians(50));
         Action trajectoryActionCloseOut = tab3.endTrajectory().fresh()
-                .splineTo(new Vector2d(-41.8, -11.40), Math.toRadians(50.04))
-                .splineTo(new Vector2d(-13.69, 0.09), Math.toRadians(58.95))
+                .splineToSplineHeading(new Pose2d(-35, -6, Math.toRadians(180)), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-8, -6), Math.toRadians(0))
                 .build();
 
         // Start Actions
@@ -302,6 +301,7 @@ public class DriveAuto extends LinearOpMode {
                         viper.SetViperPosition(),
                         garra.fecharGarra(),
                         viper.retrairViper(),
+                        arm.setArmPosition(),
                         action3,
                         arm.levantarArm(),
                         viper.esticarViper(),
