@@ -19,8 +19,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Config
-@Autonomous(name = "RedLeft", group = "Autonomous")
-public class DriveAutoRedLeft extends LinearOpMode {
+@Autonomous(name = "RedLeft2", group = "Autonomous")
+public class DriveAutoRedLeft2 extends LinearOpMode {
 
     public class moverGarra {
         private Servo garra;
@@ -47,7 +47,7 @@ public class DriveAutoRedLeft extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 garra.setPosition(0);
-                sleep(900);
+                sleep(600);
                 return false;
             }
         }
@@ -58,7 +58,7 @@ public class DriveAutoRedLeft extends LinearOpMode {
         public class InitialGarra implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                garra.setPosition(0);
+                garra.setPosition(0.35);
                 return false;
             }
         }
@@ -271,7 +271,7 @@ public class DriveAutoRedLeft extends LinearOpMode {
         public class SetViperPosition implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                encoder(viper, -500, 5);
+                encoder(viper, -600, 5);
                 sleep(500);
                 return false;
             }
@@ -292,7 +292,7 @@ public class DriveAutoRedLeft extends LinearOpMode {
         TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose)
                 .splineToLinearHeading(new Pose2d(-56, -51, Math.toRadians(50)), Math.toRadians(180));
         TrajectoryActionBuilder tab2 = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(new Vector2d(-57.5, -44), Math.toRadians(95));
+                .strafeToLinearHeading(new Vector2d(-56, -43), Math.toRadians(95));
         TrajectoryActionBuilder tab3 = drive.actionBuilder(initialPose)
                 .strafeToLinearHeading(new Vector2d(-46, -54), Math.toRadians(50));
         Action trajectoryActionCloseOut = tab3.endTrajectory().fresh()
@@ -326,9 +326,7 @@ public class DriveAutoRedLeft extends LinearOpMode {
                         garra.descerPulso(),
                         viper.retrairViper(),
                         arm.abaixarArm(),
-                        garra.subirPulso(),
                         action2,
-                        garra.descerPulso(),
                         viper.SetViperPosition(),
                         garra.fecharGarra(),
                         viper.retrairViper(),

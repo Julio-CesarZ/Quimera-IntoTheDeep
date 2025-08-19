@@ -19,8 +19,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Config
-@Autonomous(name = "RedLeft", group = "Autonomous")
-public class DriveAutoRedLeft extends LinearOpMode {
+@Autonomous(name = "BlueLeft2", group = "Autonomous")
+public class DriveAutoBlueLeft2 extends LinearOpMode {
 
     public class moverGarra {
         private Servo garra;
@@ -47,7 +47,7 @@ public class DriveAutoRedLeft extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 garra.setPosition(0);
-                sleep(900);
+                sleep(600);
                 return false;
             }
         }
@@ -58,7 +58,7 @@ public class DriveAutoRedLeft extends LinearOpMode {
         public class InitialGarra implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                garra.setPosition(0);
+                garra.setPosition(0.35);
                 return false;
             }
         }
@@ -79,19 +79,6 @@ public class DriveAutoRedLeft extends LinearOpMode {
             return new DescerPulso();
         }
 
-        public class DescerPulsoSlow implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                pulso.setPosition(0.9);
-                sleep(500);
-                return false;
-            }
-        }
-
-        public Action descerPulsoSlow() {
-            return new DescerPulsoSlow();
-        }
-
         public class SubirPulso implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
@@ -104,7 +91,6 @@ public class DriveAutoRedLeft extends LinearOpMode {
         public Action subirPulso() {
             return new SubirPulso();
         }
-
 
         public class RetrairPulso implements Action {
             @Override
@@ -188,11 +174,25 @@ public class DriveAutoRedLeft extends LinearOpMode {
             return new SetArmPosition();
         }
 
+        public class SetLowArmPosition implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                encoder(leftSup, -200, 0.5);
+                encoder(rightSup, -200, 0.5);
+                sleep(200);
+                return false;
+            }
+        }
+        public Action setLowArmPosition() {
+            return new SetLowArmPosition();
+        }
+
         public class InitialArm implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 encoder(leftSup, 0, 0.1);
                 encoder(rightSup, 0, 0.1);
+                sleep(500);
                 return false;
             }
         }
@@ -283,21 +283,21 @@ public class DriveAutoRedLeft extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        Pose2d initialPose = new Pose2d(-14.5, -62.25, Math.toRadians(90));
+        Pose2d initialPose = new Pose2d(18.5, 63, Math.toRadians(-90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
         moverGarra garra = new moverGarra(hardwareMap);
         moverArm arm = new moverArm(hardwareMap);
         moverViper viper = new moverViper(hardwareMap);
 
         TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose)
-                .splineToLinearHeading(new Pose2d(-56, -51, Math.toRadians(50)), Math.toRadians(180));
+                .splineToLinearHeading(new Pose2d(54, 52, Math.toRadians(230)), Math.toRadians(180));
         TrajectoryActionBuilder tab2 = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(new Vector2d(-57.5, -44), Math.toRadians(95));
+                .strafeToLinearHeading(new Vector2d(58.5, 45.5), Math.toRadians(-90));
         TrajectoryActionBuilder tab3 = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(new Vector2d(-46, -54), Math.toRadians(50));
+                .strafeToLinearHeading(new Vector2d(50, 56), Math.toRadians(230));
         Action trajectoryActionCloseOut = tab3.endTrajectory().fresh()
-                .splineToSplineHeading(new Pose2d(-35, -6, Math.toRadians(180)), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(-8, -6), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(35, 6, Math.toRadians(0)), Math.toRadians(270))
+                .splineToConstantHeading(new Vector2d(7.5, 12.5), Math.toRadians(0))
                 .build();
 
         // Start Actions
@@ -318,7 +318,6 @@ public class DriveAutoRedLeft extends LinearOpMode {
                 new SequentialAction(
                         action1,
                         garra.descerPulso(),
-                        //arm.levantarArmSlow(),
                         arm.levantarArm(),
                         viper.esticarViper(),
                         garra.subirPulso(),

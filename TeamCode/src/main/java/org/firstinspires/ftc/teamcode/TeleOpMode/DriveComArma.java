@@ -33,7 +33,7 @@ public class DriveComArma extends LinearOpMode {
     private Servo garra;
 
     private boolean upPulso = true;
-    private boolean openGarra = false;
+    private boolean openGarra = true;
 
     private final double powerViper = 1.0;
     private final int passoEncoder = 50;
@@ -63,7 +63,7 @@ public class DriveComArma extends LinearOpMode {
         viper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         pulso.setPosition(0.4);
-        garra.setPosition(0);
+        garra.setPosition(0.85);
 
         double speedLimit = 0.75;
 
@@ -126,12 +126,17 @@ public class DriveComArma extends LinearOpMode {
              */
 
             if (gamepad1.y) {
+                drive.setDrivePowers(new PoseVelocity2d(
+                        new Vector2d(-gamepad1.left_stick_y * 0, -gamepad1.left_stick_x * 0),
+                        -gamepad1.right_stick_x * 0
+                ));
+                drive.updatePoseEstimate();
                 pulso.setPosition(0.9);
                 encoder(leftSup, -1400, 0.7);
                 encoder(rightSup, -1450, 0.7);
                 sleep(1000);
                 encoder(viper, -2600, 0.85);
-                sleep(1300);
+                sleep(1400);
                 pulso.setPosition(0.6);
                 sleep(500);
                 garra.setPosition(0.85);
@@ -160,7 +165,7 @@ public class DriveComArma extends LinearOpMode {
                 encoder(viper, viperCP + passoEncoder, 0.3);
             }
 
-            if (gamepad1.right_trigger > 0.3 && viperCP > -2600) {
+            if (gamepad1.right_trigger > 0.3 && viperCP > -1450) {
                 encoder(viper, viperCP - passoEncoder, powerViper);
             } else if (gamepad1.left_trigger > 0.3 && viperCP < -100) {
                 encoder(viper, viperCP + passoEncoder, powerViper);

@@ -133,6 +133,20 @@ public class DriveAutoBlueLeft extends LinearOpMode {
             return new LevantarArm();
         }
 
+        public class LevantarArmSlow implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                encoder(leftSup, -1400, 0.35);
+                encoder(rightSup, -1450, 0.35);
+                sleep(1000);
+                return false;
+            }
+        }
+
+        public Action levantarArmSlow() {
+            return new LevantarArmSlow();
+        }
+
         public class AbaixarArm implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
@@ -160,11 +174,25 @@ public class DriveAutoBlueLeft extends LinearOpMode {
             return new SetArmPosition();
         }
 
+        public class SetLowArmPosition implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                encoder(leftSup, -200, 0.5);
+                encoder(rightSup, -200, 0.5);
+                sleep(200);
+                return false;
+            }
+        }
+        public Action setLowArmPosition() {
+            return new SetLowArmPosition();
+        }
+
         public class InitialArm implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                encoder(leftSup, -100, 0.1);
-                encoder(rightSup, -100, 0.1);
+                encoder(leftSup, 0, 0.1);
+                encoder(rightSup, 0, 0.1);
+                sleep(500);
                 return false;
             }
         }
@@ -221,7 +249,7 @@ public class DriveAutoBlueLeft extends LinearOpMode {
         public class InitialViper implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                encoder(viper, -100, 0.1);
+                encoder(viper, 0, 0.1);
                 return false;
             }
         }
@@ -243,7 +271,7 @@ public class DriveAutoBlueLeft extends LinearOpMode {
         public class SetViperPosition implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                encoder(viper, -300, 5);
+                encoder(viper, -600, 5);
                 sleep(500);
                 return false;
             }
@@ -262,14 +290,14 @@ public class DriveAutoBlueLeft extends LinearOpMode {
         moverViper viper = new moverViper(hardwareMap);
 
         TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose)
-                .splineToLinearHeading(new Pose2d(56, 51, Math.toRadians(230)), Math.toRadians(180));
+                .splineToLinearHeading(new Pose2d(54, 52, Math.toRadians(230)), Math.toRadians(180));
         TrajectoryActionBuilder tab2 = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(new Vector2d(55, 47), Math.toRadians(-90));
+                .strafeToLinearHeading(new Vector2d(58.5, 44), Math.toRadians(-90));
         TrajectoryActionBuilder tab3 = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(new Vector2d(46, 54), Math.toRadians(230));
+                .strafeToLinearHeading(new Vector2d(50, 56), Math.toRadians(230));
         Action trajectoryActionCloseOut = tab3.endTrajectory().fresh()
                 .splineToSplineHeading(new Pose2d(35, 6, Math.toRadians(0)), Math.toRadians(270))
-                .splineToConstantHeading(new Vector2d(5, 8), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(7.5, 12.5), Math.toRadians(0))
                 .build();
 
         // Start Actions
