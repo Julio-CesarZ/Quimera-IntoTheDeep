@@ -20,8 +20,8 @@ import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.dashboard.config.Config;
 
-@TeleOp(name = "DriveComArma", group = "TeleOp")
-public class DriveComArma extends LinearOpMode {
+@TeleOp(name = "DriveComClipe", group = "TeleOp")
+public class DriveComClipe extends LinearOpMode {
 
 
     private DcMotor viper;
@@ -65,37 +65,15 @@ public class DriveComArma extends LinearOpMode {
         pulso.setPosition(0.4);
         garra.setPosition(0.85);
 
-        double currentPower = 0;
-
-        double currentPowerBase = 0;
-
-        boolean fastMode = true;
-
-        boolean yRoutine1 = false;
-        boolean yRoutine2 = false;
-        boolean yRoutine3 = false;
-        boolean yRoutine4 = false;
+        double speedLimit = 0.75;
 
         waitForStart();
 
         while (opModeIsActive()) {
 
-            if(gamepad1.b) {
-                sleep(300);
-                fastMode = !fastMode;
-            }
-
-            if(fastMode) {
-                currentPowerBase = 0.75;
-                currentPower = 0.7;
-            } else {
-                currentPowerBase = 0.3;
-                currentPower = 0.3;
-            }
-
             drive.setDrivePowers(new PoseVelocity2d(
-                    new Vector2d(-gamepad1.left_stick_y * currentPowerBase, -gamepad1.left_stick_x * currentPowerBase),
-                    -gamepad1.right_stick_x * currentPowerBase
+                    new Vector2d(-gamepad1.left_stick_y * speedLimit, -gamepad1.left_stick_x * speedLimit),
+                    -gamepad1.right_stick_x * speedLimit
             ));
             drive.updatePoseEstimate();
 
@@ -108,7 +86,6 @@ public class DriveComArma extends LinearOpMode {
             telemetry.addData("BEsquerdo: ", leftSup.getCurrentPosition());
             telemetry.addData("Bdireito: ", rightSup.getCurrentPosition());
             telemetry.addData("Viper: ", viper.getCurrentPosition());
-            telemetry.addData("fastMode: ", fastMode);
 
             TelemetryPacket packet = new TelemetryPacket();
             packet.fieldOverlay().setStroke("#3F51B5");
@@ -135,7 +112,6 @@ public class DriveComArma extends LinearOpMode {
                 openGarra = !openGarra;
                 sleep(200);
             }
-
             /*
             if (gamepad1.a) {
                 if(openGarra) {
@@ -156,8 +132,8 @@ public class DriveComArma extends LinearOpMode {
                 ));
                 drive.updatePoseEstimate();
                 pulso.setPosition(0.9);
-                encoder(leftSup, -1300, 0.7);
-                encoder(rightSup, -1350, 0.7);
+                encoder(leftSup, -1400, 0.7);
+                encoder(rightSup, -1450, 0.7);
                 sleep(1000);
                 encoder(viper, -2600, 0.85);
                 sleep(1400);
@@ -172,6 +148,7 @@ public class DriveComArma extends LinearOpMode {
                 sleep(1300);
                 encoder(leftSup, -20, 0.7);
                 encoder(rightSup, -20, 0.7);
+                //sleep(500);
                 pulso.setPosition(0.6);
             }
 
@@ -188,7 +165,7 @@ public class DriveComArma extends LinearOpMode {
                 encoder(viper, viperCP + passoEncoder, 0.3);
             }
 
-            if (gamepad1.right_trigger > 0.3 && viperCP > -1350) {
+            if (gamepad1.right_trigger > 0.3 && viperCP > -1450) {
                 encoder(viper, viperCP - passoEncoder, powerViper);
             } else if (gamepad1.left_trigger > 0.3 && viperCP < -100) {
                 encoder(viper, viperCP + passoEncoder, powerViper);

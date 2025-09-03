@@ -136,8 +136,8 @@ public class DriveAutoRedLeft extends LinearOpMode {
         public class LevantarArm implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                encoder(leftSup, -1400, 0.7);
-                encoder(rightSup, -1450, 0.7);
+                encoder(leftSup, -1300, 0.7);
+                encoder(rightSup, -1350, 0.7);
                 sleep(1000);
                 return false;
             }
@@ -294,10 +294,10 @@ public class DriveAutoRedLeft extends LinearOpMode {
         TrajectoryActionBuilder tab2 = drive.actionBuilder(initialPose)
                 .strafeToLinearHeading(new Vector2d(-57.5, -44), Math.toRadians(95));
         TrajectoryActionBuilder tab3 = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(new Vector2d(-46, -54), Math.toRadians(50));
+                .strafeToLinearHeading(new Vector2d(-49, -55), Math.toRadians(50));
         Action trajectoryActionCloseOut = tab3.endTrajectory().fresh()
                 .splineToSplineHeading(new Pose2d(-35, -6, Math.toRadians(180)), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(-8, -6), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-12, -2), Math.toRadians(0))
                 .build();
 
         // Start Actions

@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -20,8 +21,10 @@ import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.dashboard.config.Config;
 
-@TeleOp(name = "DriveComArma", group = "TeleOp")
-public class DriveComArma extends LinearOpMode {
+@Disabled
+
+@TeleOp(name = "DriveComArma2", group = "TeleOp")
+public class DriveComArma2 extends LinearOpMode {
 
 
     private DcMotor viper;
@@ -135,7 +138,6 @@ public class DriveComArma extends LinearOpMode {
                 openGarra = !openGarra;
                 sleep(200);
             }
-
             /*
             if (gamepad1.a) {
                 if(openGarra) {
@@ -150,17 +152,38 @@ public class DriveComArma extends LinearOpMode {
              */
 
             if (gamepad1.y) {
-                drive.setDrivePowers(new PoseVelocity2d(
-                        new Vector2d(-gamepad1.left_stick_y * 0, -gamepad1.left_stick_x * 0),
-                        -gamepad1.right_stick_x * 0
-                ));
-                drive.updatePoseEstimate();
+                yRoutine1 = !yRoutine1;
+            }
+
+            if(yRoutine1 && !yRoutine2 && !yRoutine3 && !yRoutine4) {
+                yRoutine2 = true;
                 pulso.setPosition(0.9);
                 encoder(leftSup, -1300, 0.7);
                 encoder(rightSup, -1350, 0.7);
-                sleep(1000);
-                encoder(viper, -2600, 0.85);
-                sleep(1400);
+                while (leftSup.isBusy() || rightSup.isBusy() && opModeIsActive()) {
+                    drive.setDrivePowers(new PoseVelocity2d(
+                            new Vector2d(-gamepad1.left_stick_y * currentPowerBase, -gamepad1.left_stick_x * currentPowerBase),
+                            -gamepad1.right_stick_x * currentPowerBase
+                    ));
+                    drive.updatePoseEstimate();
+                    if (gamepad1.y) {
+                        yRoutine2 = !yRoutine2;
+                    }
+                }
+            }
+            if(yRoutine1 && yRoutine2 && !yRoutine3 && !yRoutine4) {
+                yRoutine3 = true;
+                encoder(viper, -2600, 0.7);
+                while (viper.isBusy() && opModeIsActive()) {
+                    drive.setDrivePowers(new PoseVelocity2d(
+                            new Vector2d(-gamepad1.left_stick_y * currentPowerBase, -gamepad1.left_stick_x * currentPowerBase),
+                            -gamepad1.right_stick_x * currentPowerBase
+                    ));
+                    drive.updatePoseEstimate();
+                    if (gamepad1.y) {
+                        yRoutine3 = !yRoutine3;
+                    }
+                }
                 pulso.setPosition(0.6);
                 sleep(500);
                 garra.setPosition(0.85);
@@ -168,11 +191,29 @@ public class DriveComArma extends LinearOpMode {
                 sleep(500);
                 pulso.setPosition(0.9);
                 sleep(500);
+            }
+            if(yRoutine1 && yRoutine2 && yRoutine3 && !yRoutine4) {
+                yRoutine4 = true;
                 encoder(viper, -100, 0.7);
-                sleep(1300);
+                while (viper.isBusy() && opModeIsActive()) {
+                    drive.setDrivePowers(new PoseVelocity2d(
+                            new Vector2d(-gamepad1.left_stick_y * currentPowerBase, -gamepad1.left_stick_x * currentPowerBase),
+                            -gamepad1.right_stick_x * currentPowerBase
+                    ));
+                    drive.updatePoseEstimate();
+                    if (gamepad1.y) {
+                        yRoutine4 = !yRoutine4;
+                    }
+                }
+            }
+            if(yRoutine1 && yRoutine2 && yRoutine3 && yRoutine4) {
                 encoder(leftSup, -20, 0.7);
                 encoder(rightSup, -20, 0.7);
                 pulso.setPosition(0.6);
+                yRoutine1 = false;
+                yRoutine2 = false;
+                yRoutine3 = false;
+                yRoutine4 = false;
             }
 
             int viperCP = viper.getCurrentPosition();
