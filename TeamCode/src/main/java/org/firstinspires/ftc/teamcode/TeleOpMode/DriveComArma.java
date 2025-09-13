@@ -156,8 +156,8 @@ public class DriveComArma extends LinearOpMode {
                 ));
                 drive.updatePoseEstimate();
                 pulso.setPosition(0.9);
-                encoder(leftSup, -1300, 0.7);
-                encoder(rightSup, -1350, 0.7);
+                encoder(leftSup, -1325, 0.7);
+                encoder(rightSup, -1375, 0.7);
                 sleep(1000);
                 encoder(viper, -2600, 0.85);
                 sleep(1400);
@@ -172,6 +172,7 @@ public class DriveComArma extends LinearOpMode {
                 sleep(1300);
                 encoder(leftSup, -20, 0.7);
                 encoder(rightSup, -20, 0.7);
+                sleep(200);
                 pulso.setPosition(0.6);
             }
 

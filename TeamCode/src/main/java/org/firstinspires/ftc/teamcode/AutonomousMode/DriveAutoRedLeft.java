@@ -35,7 +35,7 @@ public class DriveAutoRedLeft extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 garra.setPosition(0.85);
-                sleep(300);
+                sleep(800);
                 return false;
             }
         }
@@ -47,7 +47,7 @@ public class DriveAutoRedLeft extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 garra.setPosition(0);
-                sleep(900);
+                sleep(800);
                 return false;
             }
         }
@@ -70,7 +70,7 @@ public class DriveAutoRedLeft extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 pulso.setPosition(0.9);
-                sleep(500);
+                sleep(1000);
                 return false;
             }
         }
@@ -191,8 +191,8 @@ public class DriveAutoRedLeft extends LinearOpMode {
         public class InitialArm implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                encoder(leftSup, 0, 0.1);
-                encoder(rightSup, 0, 0.1);
+                encoder(leftSup, -200, 0.1);
+                encoder(rightSup, -200, 0.1);
                 return false;
             }
         }
@@ -226,7 +226,7 @@ public class DriveAutoRedLeft extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 encoder(viper, -2600, 7);
-                sleep(1500);
+                sleep(1000);
                 return false;
             }
         }
@@ -292,12 +292,12 @@ public class DriveAutoRedLeft extends LinearOpMode {
         TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose)
                 .splineToLinearHeading(new Pose2d(-56, -51, Math.toRadians(50)), Math.toRadians(180));
         TrajectoryActionBuilder tab2 = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(new Vector2d(-57.5, -44), Math.toRadians(95));
+                .strafeToLinearHeading(new Vector2d(-56, -40), Math.toRadians(95));
         TrajectoryActionBuilder tab3 = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(new Vector2d(-49, -55), Math.toRadians(50));
+                .strafeToLinearHeading(new Vector2d(-46, -56), Math.toRadians(50));
         Action trajectoryActionCloseOut = tab3.endTrajectory().fresh()
-                .splineToSplineHeading(new Pose2d(-35, -6, Math.toRadians(180)), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(-12, -2), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(-30, -6, Math.toRadians(180)), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-12, 5), Math.toRadians(0))
                 .build();
 
         // Start Actions

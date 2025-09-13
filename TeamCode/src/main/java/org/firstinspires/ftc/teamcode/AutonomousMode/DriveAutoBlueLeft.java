@@ -35,7 +35,7 @@ public class DriveAutoBlueLeft extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 garra.setPosition(0.85);
-                sleep(300);
+                sleep(800);
                 return false;
             }
         }
@@ -122,8 +122,8 @@ public class DriveAutoBlueLeft extends LinearOpMode {
         public class LevantarArm implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                encoder(leftSup, -1400, 0.7);
-                encoder(rightSup, -1450, 0.7);
+                encoder(leftSup, -1300, 0.7);
+                encoder(rightSup, -1350, 0.7);
                 sleep(1000);
                 return false;
             }
@@ -190,8 +190,8 @@ public class DriveAutoBlueLeft extends LinearOpMode {
         public class InitialArm implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                encoder(leftSup, 0, 0.1);
-                encoder(rightSup, 0, 0.1);
+                encoder(leftSup, -200, 0.1);
+                encoder(rightSup, -200, 0.1);
                 sleep(500);
                 return false;
             }
@@ -226,7 +226,7 @@ public class DriveAutoBlueLeft extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 encoder(viper, -2600, 7);
-                sleep(1500);
+                sleep(1300);
                 return false;
             }
         }
@@ -292,7 +292,7 @@ public class DriveAutoBlueLeft extends LinearOpMode {
         TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose)
                 .splineToLinearHeading(new Pose2d(54, 52, Math.toRadians(230)), Math.toRadians(180));
         TrajectoryActionBuilder tab2 = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(new Vector2d(58.5, 44), Math.toRadians(-90));
+                .strafeToLinearHeading(new Vector2d(59, 42), Math.toRadians(-90));
         TrajectoryActionBuilder tab3 = drive.actionBuilder(initialPose)
                 .strafeToLinearHeading(new Vector2d(50, 56), Math.toRadians(230));
         Action trajectoryActionCloseOut = tab3.endTrajectory().fresh()
