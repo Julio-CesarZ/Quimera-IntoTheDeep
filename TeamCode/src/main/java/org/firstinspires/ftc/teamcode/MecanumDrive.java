@@ -137,8 +137,7 @@ public final class MecanumDrive {
 
             imu = lazyImu.get();
 
-            // TODO: reverse encoders if needed
-            leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+            // TODO: reverse encoders if neededa
             leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
             this.pose = pose;
@@ -237,7 +236,6 @@ public final class MecanumDrive {
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // TODO: reverse motor directions if needed
-        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // TODO: make sure your config has an IMU with this name (can be BNO or BHI)

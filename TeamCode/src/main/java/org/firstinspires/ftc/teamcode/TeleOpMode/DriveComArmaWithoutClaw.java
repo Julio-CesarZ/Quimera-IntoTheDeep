@@ -20,8 +20,8 @@ import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.dashboard.config.Config;
 
-@TeleOp(name = "DriveComArmaLimited", group = "TeleOp")
-public class DriveComArmaLimited extends LinearOpMode {
+@TeleOp(name = "DriveNotLimited", group = "TeleOp")
+public class DriveComArmaWithoutClaw extends LinearOpMode {
 
 
     private DcMotor viper;
@@ -159,7 +159,7 @@ public class DriveComArmaLimited extends LinearOpMode {
                 encoder(leftSup, -1325, 0.7);
                 encoder(rightSup, -1375, 0.7);
                 sleep(1000);
-                encoder(viper, -800, 0.85);
+                encoder(viper, -2000, 0.85);
                 sleep(1400);
                 pulso.setPosition(0.6);
                 sleep(500);
@@ -189,16 +189,16 @@ public class DriveComArmaLimited extends LinearOpMode {
                 encoder(viper, viperCP + passoEncoder, 0.3);
             }
 
-            if (gamepad1.right_trigger > 0.3 && viperCP > -900) {
+            if (gamepad1.right_trigger > 0.3 && viperCP > -2000) {
                 encoder(viper, viperCP - passoEncoder, powerViper);
-            } else if (gamepad1.left_trigger > 0.3 && viperCP < -100) {
+            } else if (gamepad1.left_trigger > 0.3 && viperCP < -300) {
                 encoder(viper, viperCP + passoEncoder, powerViper);
             }
 
-            if (gamepad1.right_bumper && leftCP < -20 && rightCP < -20) {
+            if (gamepad1.right_bumper && leftCP < -50 && rightCP < -50) {
                 encoder(leftSup, leftCP + passoEncoder, powerViper);
                 encoder(rightSup, rightCP + passoEncoder, powerViper);
-            } else if (gamepad1.left_bumper && leftCP > -1400 && rightCP > -1400) {
+            } else if (gamepad1.left_bumper && leftCP > -1350 && rightCP > -1350) {
                 encoder(leftSup, leftCP - passoEncoder, powerViper);
                 encoder(rightSup, rightCP - passoEncoder, powerViper);
             }

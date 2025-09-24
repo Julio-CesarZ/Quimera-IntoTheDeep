@@ -20,11 +20,9 @@ import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.dashboard.config.Config;
 
-@TeleOp(name = "DriveComArmaLimited", group = "TeleOp")
-public class DriveComArmaLimited extends LinearOpMode {
+@TeleOp(name = "DriveSemViper", group = "TeleOp")
+public class DriveSemViper extends LinearOpMode {
 
-
-    private DcMotor viper;
     private DcMotor rightSup;
     private DcMotor leftSup;
 
@@ -45,7 +43,6 @@ public class DriveComArmaLimited extends LinearOpMode {
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(-24, -64.5, Math.toRadians(90)));
 
-        viper = hardwareMap.get(DcMotor.class, "viper");
         rightSup = hardwareMap.get(DcMotor.class, "rightSup");
         leftSup = hardwareMap.get(DcMotor.class, "leftSup");
 
@@ -56,11 +53,9 @@ public class DriveComArmaLimited extends LinearOpMode {
 
         leftSup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightSup.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        viper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         leftSup.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightSup.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        viper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         pulso.setPosition(0.4);
         garra.setPosition(0.85);
@@ -107,7 +102,6 @@ public class DriveComArmaLimited extends LinearOpMode {
             telemetry.addData("heading (deg)", Math.toDegrees(pose.heading.toDouble()));
             telemetry.addData("BEsquerdo: ", leftSup.getCurrentPosition());
             telemetry.addData("Bdireito: ", rightSup.getCurrentPosition());
-            telemetry.addData("Viper: ", viper.getCurrentPosition());
             telemetry.addData("fastMode: ", fastMode);
 
             TelemetryPacket packet = new TelemetryPacket();
@@ -159,7 +153,6 @@ public class DriveComArmaLimited extends LinearOpMode {
                 encoder(leftSup, -1325, 0.7);
                 encoder(rightSup, -1375, 0.7);
                 sleep(1000);
-                encoder(viper, -800, 0.85);
                 sleep(1400);
                 pulso.setPosition(0.6);
                 sleep(500);
@@ -168,7 +161,6 @@ public class DriveComArmaLimited extends LinearOpMode {
                 sleep(500);
                 pulso.setPosition(0.9);
                 sleep(500);
-                encoder(viper, -100, 0.7);
                 sleep(1300);
                 encoder(leftSup, -20, 0.7);
                 encoder(rightSup, -20, 0.7);
@@ -176,23 +168,12 @@ public class DriveComArmaLimited extends LinearOpMode {
                 pulso.setPosition(0.6);
             }
 
-            int viperCP = viper.getCurrentPosition();
             int leftCP = leftSup.getCurrentPosition();
             int rightCP = rightSup.getCurrentPosition();
 
             if(gamepad2.y) {
                 encoder(leftSup, leftCP + passoEncoder, 0.3);
                 encoder(rightSup, rightCP + passoEncoder, 0.3);
-            }
-
-            if(gamepad2.b) {
-                encoder(viper, viperCP + passoEncoder, 0.3);
-            }
-
-            if (gamepad1.right_trigger > 0.3 && viperCP > -900) {
-                encoder(viper, viperCP - passoEncoder, powerViper);
-            } else if (gamepad1.left_trigger > 0.3 && viperCP < -100) {
-                encoder(viper, viperCP + passoEncoder, powerViper);
             }
 
             if (gamepad1.right_bumper && leftCP < -20 && rightCP < -20) {
