@@ -10,10 +10,10 @@ public class motorTestWithoutControl extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        DcMotor testMotor0 = hardwareMap.get(DcMotor.class, "0");
-        DcMotor testMotor1 = hardwareMap.get(DcMotor.class, "1");
-        DcMotor testMotor2 = hardwareMap.get(DcMotor.class, "2");
-        DcMotor testMotor3 = hardwareMap.get(DcMotor.class, "3");
+        DcMotor testMotor0 = hardwareMap.get(DcMotor.class, "frontright");
+        DcMotor testMotor1 = hardwareMap.get(DcMotor.class, "frontleft");
+        DcMotor testMotor2 = hardwareMap.get(DcMotor.class, "backright");
+        DcMotor testMotor3 = hardwareMap.get(DcMotor.class, "backleft");
 
         waitForStart();
 
