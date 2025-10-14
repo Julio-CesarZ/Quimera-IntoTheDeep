@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.TestMode;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -10,6 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 @TeleOp(name = "servoTest", group = "Test")
+@Disabled
 public class servoTest extends LinearOpMode {
 
     private Servo s1;
