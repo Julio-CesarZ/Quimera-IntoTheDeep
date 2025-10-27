@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.TestMode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name = "portTest", group = "Test")
+@Disabled
 public class portsTest extends LinearOpMode {
 
     @Override

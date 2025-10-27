@@ -20,6 +20,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Config
+@Disabled
 @Autonomous(name = "RedLeft2", group = "Autonomous")
 @Disabled
 public class DriveAutoRedLeft2 extends LinearOpMode {
